@@ -17,9 +17,9 @@ target_include_directories(radian INTERFACE ${PROJECT_SOURCE_DIR}/include)
 option(RADIAN_BUILD_TESTS "Build radian testing suite using Unity" OFF)
 
 if(${CMAKE_C_BYTE_ORDER} STREQUAL BIG_ENDIAN)
-  target_compile_definitions(radian INTERFACE RADIAN_ENDIAN_BE)
+  target_compile_definitions(radian INTERFACE RADIAN_HOST_BE)
 else()
-  target_compile_definitions(radian INTERFACE RADIAN_ENDIAN_LE)
+  target_compile_definitions(radian INTERFACE RADIAN_HOST_LE)
 endif()
 
 if(RADIAN_BUILD_TESTS AND BUILD_TESTING)
