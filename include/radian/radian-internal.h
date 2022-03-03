@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 
-#if !defined(RADIAN_HOST_BE) && !defined(RADIAN_HOST_LE)
+#if !(defined(RADIAN_HOST_BE) || defined(RADIAN_HOST_LE))
   #error "Host endianness is not defined"
 #endif
 
