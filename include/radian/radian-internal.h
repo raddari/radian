@@ -4,7 +4,7 @@
 
 
 #if !defined(RADIAN_HOST_BE) && !defined(RADIAN_HOST_LE)
-  #error Host endianness is undefined
+  #error "Host endianness is not defined"
 #endif
 
 
