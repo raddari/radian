@@ -1,4 +1,4 @@
-project(radian_tests LANGUAGES C)
+project(radian_test LANGUAGES C)
 
 include(FetchContent)
 
@@ -9,5 +9,10 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(unity)
 
+file(
+    COPY        ${CMAKE_CURRENT_SOURCE_DIR}/deadbeef.bin
+    DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
+)
+
 include(RadianTest)
-radian_test(read_write)
+radian_test(read_be)
