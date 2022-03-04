@@ -1,0 +1,35 @@
+name: linux
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        cc: [gcc-10, clang-9]
+        build_type: [Debug, Release]
+        std: [11]
+        os: [ubuntu-latest]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Create Build Environment
+      run: cmake -B ${{runner.workspace}}/build -DBUILD_TESTING=1 -DRADIAN_BUILD_TESTS=1
+      
+    - name: Configure
+      working-directory: ${{runner.workspace}}/build
+      env:
+        CC: ${{matrix.cc}}
+      run: cmake -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DCMAKE_C_STANDARD=${{matrix.std}}
+        
+    - name: Build
+      working-directory: ${{runner.workspace}}/build
+      run: cmake --build . --config ${{matrix.build_type}}
+      
+    - name: Test
+      working-directory: ${{runner.workspace}}/build
+      run: ctest -C ${{matrix.build_type}} -V
+      env:
+        CTEST_OUTPUT_ON_FAILURE: True
