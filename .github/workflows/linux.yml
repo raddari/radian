@@ -22,7 +22,7 @@ jobs:
       working-directory: ${{runner.workspace}}/build
       env:
         CC: ${{matrix.cc}}
-      run: cmake -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DCMAKE_C_STANDARD=${{matrix.std}}
+      run: cmake -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DCMAKE_C_STANDARD=${{matrix.std}} $GITHUB_WORKSPACE
         
     - name: Build
       working-directory: ${{runner.workspace}}/build
