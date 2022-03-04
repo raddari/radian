@@ -7,10 +7,7 @@ jobs:
     runs-on: ${{matrix.os}}
     strategy:
       matrix:
-        # windows-2016 and windows-2019 have MSVC 2017 and 2019 installed
-        # respectively: https://github.com/actions/virtual-environments.
-        os: [windows-2019]
-        platform: [x64]
+        os: [windows-latest]
         build_type: [Debug, Release]
         standard: [11]
 
@@ -21,14 +18,9 @@ jobs:
       run: cmake -B ${{runner.workspace}}/build -DBUILD_TESTING=1 -DRADIAN_BUILD_TESTS=1
 
     - name: Configure
-      # Use a bash shell for $GITHUB_WORKSPACE.
       shell: bash
       working-directory: ${{runner.workspace}}/build
-      run: |
-        cmake -DCMAKE_BUILD_TYPE=${{matrix.build_type}} \
-              -A ${{matrix.platform}} \
-              -DCMAKE_C_STANDARD=${{matrix.standard}} \
-              $GITHUB_WORKSPACE
+      run: cmake -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DCMAKE_C_STANDARD=${{matrix.standard}} $GITHUB_WORKSPACE
               
     - name: Build
       working-directory: ${{runner.workspace}}/build
