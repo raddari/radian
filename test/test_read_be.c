@@ -34,10 +34,26 @@ void test_read_be_u16() {
   TEST_ASSERT_EQUAL_UINT16(0xBEEF, beef);
 }
 
+void test_read_be_u32() {
+  uint32_t deadbeef;
+  RADIAN_READ_BE(test_file, deadbeef);
+  TEST_ASSERT_EQUAL_UINT32(0xDEADBEEF, deadbeef);
+}
+
+void test_read_be_u64() {
+  uint64_t deadbeef;
+  RADIAN_READ_BE(test_file, deadbeef);
+  TEST_ASSERT_EQUAL_UINT64(0xDEADBEEFDEADBEEF, deadbeef);
+}
+
 int main() {
   UNITY_BEGIN();
+
   RUN_TEST(test_read_be_u8);
   RUN_TEST(test_read_be_u16);
+  RUN_TEST(test_read_be_u32);
+  RUN_TEST(test_read_be_u64);
+
   return UNITY_END();
 }
 
