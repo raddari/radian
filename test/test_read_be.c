@@ -10,7 +10,7 @@
 static FILE *test_file;
 
 
-void test_read_be_bytes() {
+void test_read_be_u8() {
   uint8_t de, ad, be, ef;
   RADIAN_READ_BE(test_file, de);
   TEST_ASSERT_EQUAL_UINT8(0xDE, de);
@@ -25,10 +25,19 @@ void test_read_be_bytes() {
   TEST_ASSERT_EQUAL_UINT8(0xEF, ef);
 }
 
+void test_read_be_u16() {
+  uint16_t dead, beef;
+  RADIAN_READ_BE(test_file, dead);
+  TEST_ASSERT_EQUAL_UINT16(0xDEAD, dead);
+
+  RADIAN_READ_BE(test_file, beef);
+  TEST_ASSERT_EQUAL_UINT16(0xBEEF, beef);
+}
 
 int main() {
   UNITY_BEGIN();
-  RUN_TEST(test_read_be_bytes);
+  RUN_TEST(test_read_be_u8);
+  RUN_TEST(test_read_be_u16);
   return UNITY_END();
 }
 
