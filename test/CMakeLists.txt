@@ -16,3 +16,4 @@ file(
 
 include(RadianTest)
 radian_test(read_be)
+radian_test(read_le)
