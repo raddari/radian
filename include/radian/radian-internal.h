@@ -1,6 +1,5 @@
 #pragma once
 
-#include <byteswap.h>
 #include <stdint.h>
 #include <stdio.h>
 
@@ -15,15 +14,26 @@
 #define _RADIAN_S(x) _RADIAN_S_(x)
 #define _RADIAN_DIAG _RADIAN_S(__FILE__) ":" _RADIAN_S(__LINE__) ": "
 
-#define _RADIAN_BSWAP(target)                                     \
-    {                                                             \
-      switch (sizeof (target)) {                                  \
-        case sizeof (uint16_t): target = bswap_16(target); break; \
-        case sizeof (uint32_t): target = bswap_32(target); break; \
-        case sizeof (uint64_t): target = bswap_64(target); break; \
-        default: break;                                           \
-      }                                                           \
-    }
+
+#define _RADIAN_BSWAP(target) (_Generic((target), \
+    uint16_t: _RADIAN_BSWAP_16(target),           \
+    uint32_t: _RADIAN_BSWAP_32(target),           \
+    uint64_t: _RADIAN_BSWAP_64(target),           \
+    default:  _RADIAN_BSWAP_NOP(target)))
+
+#define _RADIAN_BSWAP_NOP(target) target
+
+#define _RADIAN_BSWAP_16(target) \
+    ((((target) & 0xFF) << 8) | ((target) >> 8))
+
+#define _RADIAN_BSWAP_32(target)                       \
+    ((_RADIAN_BSWAP_16(((target) & 0xFFFF)) << 16)     \
+    | _RADIAN_BSWAP_16(((target) >> 16)))
+
+#define _RADIAN_BSWAP_64(target)                       \
+    ((_RADIAN_BSWAP_32(((target) & 0xFFFFFFFF)) << 32) \
+    | _RADIAN_BSWAP_32(((target) >> 32)))
+
 
 #define _RADIAN_READ_MANY(file, dest, n)                                   \
     {                                                                      \
@@ -45,14 +55,14 @@
   #define _RADIAN_READ_BE(file, dest) \
       {                               \
         _RADIAN_READ(file, dest);     \
-        _RADIAN_BSWAP(dest);          \
+        dest = _RADIAN_BSWAP(dest);   \
       }
 #else
   #define _RADIAN_READ_BE(file, dest) _RADIAN_READ(file, dest)
   #define _RADIAN_READ_LE(file, dest) \
       {                               \
         _RADIAN_READ(file, dest);     \
-        _RADIAN_BSWAP(dest);          \
+        dest = _RADIAN_BSWAP(dest);   \
       }
 #endif
 
