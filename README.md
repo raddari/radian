@@ -1,4 +1,5 @@
 # radian
+![license](https://img.shields.io/github/license/raddari/radian)
 ![linux](https://github.com/raddari/radian/workflows/linux/badge.svg)
 ![macos](https://github.com/raddari/radian/workflows/macos/badge.svg)
 ![windows](https://github.com/raddari/radian/workflows/windows/badge.svg)
