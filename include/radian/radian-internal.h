@@ -1,10 +1,13 @@
 #pragma once
 
+#include <byteswap.h>
+#include <stdint.h>
 #include <stdio.h>
 
 
 #if !(defined(RADIAN_HOST_BE) || defined(RADIAN_HOST_LE))
-  #error "Host endianness is not defined"
+  #error "Host endianness is not defined" \
+         " - please build with CMake or manually define RADIAN_HOST_BE or RADIAN_HOST_LE"
 #endif
 
 
@@ -12,7 +15,15 @@
 #define _RADIAN_S(x) _RADIAN_S_(x)
 #define _RADIAN_DIAG _RADIAN_S(__FILE__) ":" _RADIAN_S(__LINE__) ": "
 
-#define _RADIAN_BSWAP(target)
+#define _RADIAN_BSWAP(target)                                     \
+    {                                                             \
+      switch (sizeof (target)) {                                  \
+        case sizeof (uint16_t): target = bswap_16(target); break; \
+        case sizeof (uint32_t): target = bswap_32(target); break; \
+        case sizeof (uint64_t): target = bswap_64(target); break; \
+        default: break;                                           \
+      }                                                           \
+    }
 
 #define _RADIAN_READ_MANY(file, dest, n)                                   \
     {                                                                      \
