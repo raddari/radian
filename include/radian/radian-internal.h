@@ -51,20 +51,18 @@
 
 #define _RADIAN_READ(file, dest) _RADIAN_READ_MANY(file, &dest, 1)
 
+#define _RADIAN_READ_BSWAP(file, dest) \
+    {                                  \
+      _RADIAN_READ(file, dest);        \
+      dest = _RADIAN_BSWAP(dest);      \
+    }
+
 #ifdef RADIAN_HOST_LE
   #define _RADIAN_READ_LE(file, dest) _RADIAN_READ(file, dest)
-  #define _RADIAN_READ_BE(file, dest) \
-      {                               \
-        _RADIAN_READ(file, dest);     \
-        dest = _RADIAN_BSWAP(dest);   \
-      }
+  #define _RADIAN_READ_BE(file, dest) _RADIAN_READ_BSWAP(file, dest)
 #elif  RADIAN_HOST_BE
   #define _RADIAN_READ_BE(file, dest) _RADIAN_READ(file, dest)
-  #define _RADIAN_READ_LE(file, dest) \
-      {                               \
-        _RADIAN_READ(file, dest);     \
-        dest = _RADIAN_BSWAP(dest);   \
-      }
+  #define _RADIAN_READ_LE(file, dest) _RADIAN_READ_BSWAP(file, dest)
 #endif
 
 
@@ -78,10 +76,16 @@
 
 #define _RADIAN_WRITE(file, src) _RADIAN_WRITE_MANY(file, &src, 1)
 
+#define _RADIAN_WRITE_BSWAP(file, src)           \
+    {                                            \
+      __typeof__(src) temp = _RADIAN_BSWAP(src); \
+      _RADIAN_WRITE(file, temp);                 \
+    }
+
 #ifdef RADIAN_HOST_LE
   #define _RADIAN_WRITE_LE(file, src) _RADIAN_WRITE(file, src)
-  #define _RADIAN_WRITE_BE(file, src) _RADIAN_WRITE(file, _RADIAN_BSWAP(src))
+  #define _RADIAN_WRITE_BE(file, src) _RADIAN_WRITE_BSWAP(file, src)
 #elif  RADIAN_HOST_BE
   #define _RADIAN_WRITE_BE(file, src) _RADIAN_WRITE(file, src)
-  #define _RADIAN_WRITE_LE(file, src) _RADIAN_WRITE(file, _RADIAN_BSWAP(src))
+  #define _RADIAN_WRITE_LE(file, src) _RADIAN_WRITE_BSWAP(file, src)
 #endif
