@@ -12,7 +12,7 @@
 
 #define _RADIAN_S_(x) #x
 #define _RADIAN_S(x) _RADIAN_S_(x)
-#define _RADIAN_DIAG _RADIAN_S(__FILE__) ":" _RADIAN_S(__LINE__) ": "
+#define _RADIAN_DIAG __FILE__ ":" _RADIAN_S(__LINE__) ": "
 #define _RADIAN_REPORT(msg) fprintf(stderr, _RADIAN_DIAG msg "\n")
 
 
