@@ -9,11 +9,6 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(unity)
 
-file(
-    COPY        ${CMAKE_CURRENT_SOURCE_DIR}/deadbeef.bin
-    DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
-)
-
 include(RadianTest)
 radian_test(read_be)
 radian_test(read_le)
