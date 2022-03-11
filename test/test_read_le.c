@@ -7,6 +7,7 @@
 #include <stdlib.h>
 
 
+static uint8_t buffer[] = {0xDE, 0xAD, 0xBE, 0xEF, 0x0B, 0xAD, 0xC0, 0xDE};
 static FILE *test_file;
 
 
@@ -43,7 +44,7 @@ void test_read_le_u32() {
 void test_read_le_u64() {
   uint64_t deadbeef;
   RADIAN_READ_LE(test_file, deadbeef);
-  TEST_ASSERT_EQUAL_UINT64(0xEFBEADDEEFBEADDE, deadbeef);
+  TEST_ASSERT_EQUAL_UINT64(0xDEC0AD0BEFBEADDE, deadbeef);
 }
 
 int main() {
@@ -58,7 +59,7 @@ int main() {
 }
 
 void setUp() {
-  test_file = fopen("deadbeef.bin", "rb");
+  test_file = fmemopen(buffer, sizeof buffer, "rb");
   if (!test_file) {
     perror("opening deadbeef.bin file");
     exit(EXIT_FAILURE);
