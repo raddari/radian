@@ -58,7 +58,7 @@
         _RADIAN_READ(file, dest);     \
         dest = _RADIAN_BSWAP(dest);   \
       }
-#else
+#elif  RADIAN_HOST_BE
   #define _RADIAN_READ_BE(file, dest) _RADIAN_READ(file, dest)
   #define _RADIAN_READ_LE(file, dest) \
       {                               \
@@ -67,7 +67,21 @@
       }
 #endif
 
-#define _RADIAN_WRITE_MANY(file, src, n)
-#define _RADIAN_WRITE(file, src)
-#define _RADIAN_WRITE_BE(file, src)
-#define _RADIAN_WRITE_LE(file, src)
+
+#define _RADIAN_WRITE_MANY(file, src, n)                            \
+    {                                                               \
+      size_t nwritten = fwrite((src), sizeof *(src), (n), (file));  \
+      if (nwritten < (n)) {                                         \
+        _RADIAN_REPORT("Wrote less than " #n " objects for " #src); \
+      }                                                             \
+    }
+
+#define _RADIAN_WRITE(file, src) _RADIAN_WRITE_MANY(file, &src, 1)
+
+#ifdef RADIAN_HOST_LE
+  #define _RADIAN_WRITE_LE(file, src) _RADIAN_WRITE(file, src)
+  #define _RADIAN_WRITE_BE(file, src) _RADIAN_WRITE(file, _RADIAN_BSWAP(src))
+#elif  RADIAN_HOST_BE
+  #define _RADIAN_WRITE_BE(file, src) _RADIAN_WRITE(file, src)
+  #define _RADIAN_WRITE_LE(file, src) _RADIAN_WRITE(file, _RADIAN_BSWAP(src))
+#endif
