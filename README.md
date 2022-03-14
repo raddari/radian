@@ -13,7 +13,7 @@ I recommend using [**FetchContent**](https://cmake.org/cmake/help/latest/module/
 **TODO:** example CMakeLists.txt
 
 ### Other
-Copy **radian.h** and **radian-internal.h** into your include directory. Define `RADIAN_HOST_BE` or `RADIAN_HOST_LE` before including **radian/radian.h**.
+Copy the **include/radian** folder into your include directory. Define `RADIAN_HOST_BE` or `RADIAN_HOST_LE` before including **radian/radian.h**.
 
 ## Usage
 Example program:
