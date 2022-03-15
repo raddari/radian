@@ -39,9 +39,9 @@ int main() {
   fclose(file);
   
   FILE *output = fopen("output.bin", "w");
-  RADIAN_WRITE_BE(file, data.a);
-  RADIAN_WRITE_LE(file, data.b);
-  RADIAN_WRITE_LE(file, data.c);
+  RADIAN_WRITE_BE(output, data.a);
+  RADIAN_WRITE_LE(output, data.b);
+  RADIAN_WRITE_LE(output, data.c);
   fclose(output);
   
   return 0;
