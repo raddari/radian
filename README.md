@@ -10,7 +10,23 @@ Header-only library of macros to assist with reading and writing big/little endi
 ### CMake
 I recommend using [**FetchContent**](https://cmake.org/cmake/help/latest/module/FetchContent.html) to download and populate this library in your CMake project.
 
-**TODO:** example CMakeLists.txt
+```cmake
+cmake_minimum_required(VERSION 3.20)
+project(example_project LANGUAGES C)
+
+include(FetchContent)
+FetchContent_Declare(
+  radian
+  GIT_REPOSITORY https://github.com/raddari/radian.git
+  GIT_TAG main
+)
+FetchContent_MakeAvailable(radian)
+
+add_executable(example_exe main.c)
+target_link_libraries(example_exe PRIVATE
+    radian::radian
+)
+```
 
 ### Other
 Copy the **include/radian** folder into your include directory. Define `RADIAN_HOST_BE` or `RADIAN_HOST_LE` before including **radian/radian.h**.
